@@ -10,12 +10,17 @@ package graph;
  */
 
 import java.awt.*;
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
 
 public class Graph {
     private CityNode[] nodes; // nodes of the graph
     private Edge[] adjacencyList; // adjacency list; for each vertex stores a linked list of edges
     private int numEdges; // total number of edges
     // Add other variables as needed
+    private int numNodes;
 
 
     /**
@@ -26,6 +31,38 @@ public class Graph {
      */
     public Graph(String filename) {
        // FILL IN CODE: load the graph from the given file
+        int c = 0;
+        String line;
+        numEdges = 0;
+        try(BufferedReader file = new BufferedReader(new FileReader(filename))){
+            file.readLine();
+            numNodes = Integer.parseInt(file.readLine());
+            String[] hashCity = new String[numNodes];
+            nodes = new CityNode[numNodes];
+            while((line = file.readLine()) != "ARCS"){
+                String[] cities = line.split(" ");
+                nodes[c] = new CityNode(cities[0], Double.parseDouble(cities[1]), Double.parseDouble(cities[2]));
+                hashCity[c] = nodes[c].getCity();
+                c++;
+
+            }
+            adjacencyList = new Edge[numNodes];
+            while((line = file.readLine()) != null){
+                String [] edges = line.split(" ");
+                Edge tmp;
+                for(int i = 0; i < numEdges; i++){
+                    if(adjacencyList[i] == edges[0]){
+                        tmp = adjacencyList[i];
+                    }
+                }
+            }
+
+        }catch(IOException e){
+            System.out.println("error");
+        }
+
+
+
 
 
 
@@ -110,6 +147,10 @@ public class Graph {
      */
     public CityNode getNode(int nodeId) {
         return nodes[nodeId];
+    }
+
+    public static void main(String [] args){
+        Graph g1 = new Graph("input/USA.txt");
     }
 
 }
