@@ -11,9 +11,10 @@ package graph;
 
 import java.awt.*;
 import java.io.BufferedReader;
-import java.io.FileNotFoundException;
+//import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.HashMap;
 
 public class Graph {
     private CityNode[] nodes; // nodes of the graph
@@ -33,26 +34,50 @@ public class Graph {
        // FILL IN CODE: load the graph from the given file
         int c = 0;
         String line;
+        HashMap<String, Integer> map = new HashMap<>();
         numEdges = 0;
         try(BufferedReader file = new BufferedReader(new FileReader(filename))){
             file.readLine();
-            numNodes = Integer.parseInt(file.readLine());
-            String[] hashCity = new String[numNodes];
+            line = file.readLine();
+            numNodes = Integer.parseInt(line);
             nodes = new CityNode[numNodes];
-            while((line = file.readLine()) != "ARCS"){
+            line = file.readLine();
+            while(c  < numNodes){
+                System.out.println(line);
                 String[] cities = line.split(" ");
-                nodes[c] = new CityNode(cities[0], Double.parseDouble(cities[1]), Double.parseDouble(cities[2]));
-                hashCity[c] = nodes[c].getCity();
+                CityNode node = new CityNode(cities[0], Double.parseDouble(cities[1]), Double.parseDouble(cities[2]));
+                nodes[c] = node;
+                map.put(cities[0], c);
                 c++;
+                line = file.readLine();
 
             }
             adjacencyList = new Edge[numNodes];
+
             while((line = file.readLine()) != null){
                 String [] edges = line.split(" ");
+                Edge edge1 = new Edge(map.get(edges[0]), map.get(edges[1]), Integer.parseInt(edges[2]));
+                numEdges++;
+                Edge edge2 = new Edge(map.get(edges[1]), map.get(edges[0]), Integer.parseInt(edges[2]));
+                numEdges++;
                 Edge tmp;
-                for(int i = 0; i < numEdges; i++){
-                    if(adjacencyList[i] == edges[0]){
-                        tmp = adjacencyList[i];
+                int loc = 0;
+                if(adjacencyList[0] == null){
+                    adjacencyList[0] = edge1;
+                    adjacencyList[1] = edge2;
+                }else{
+                    while(loc < numEdges && adjacencyList[loc]!= null){
+                        if(adjacencyList[loc].getId1() == map.get(edges[0])){
+                            for(tmp = adjacencyList[loc]; tmp.next() != null; tmp = tmp.next()){ }
+                            tmp.setNext(edge1);
+
+                        }
+                        if(adjacencyList[loc].getId1() == map.get(edges[1])){
+                            for(tmp = adjacencyList[loc]; tmp.next() != null; tmp = tmp.next()){ }
+                            tmp.setNext(edge2);
+
+                        }
+                        loc++;
                     }
                 }
             }
@@ -99,6 +124,12 @@ public class Graph {
     public Point[][] getEdges() {
         Point[][] edges2D = new Point[numEdges][2];
         // FILL IN CODE
+        /*
+        for(int i = 0; i < numNodes; i ++){
+            for(int j = 0; i < numNodes; i ++){
+                if(adjacencyList[i]
+            }
+        }*/
 
 
 
@@ -117,6 +148,9 @@ public class Graph {
         }
         Point[] nodes = new Point[this.nodes.length];
         // FILL IN CODE
+        for(int i = 0; i < numNodes; i++){
+            nodes[i] = this.nodes[i].getLocation();
+        }
 
 
         return nodes;
@@ -134,6 +168,9 @@ public class Graph {
         }
         String[] labels = new String[nodes.length];
         // FILL IN CODE
+        for(int i = 0; i < numNodes; i++){
+            labels[i] = nodes[i].getCity();
+        }
 
 
         return labels;
@@ -149,8 +186,5 @@ public class Graph {
         return nodes[nodeId];
     }
 
-    public static void main(String [] args){
-        Graph g1 = new Graph("input/USA.txt");
-    }
 
 }
