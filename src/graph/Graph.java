@@ -60,26 +60,21 @@ public class Graph {
                 numEdges++;
                 Edge edge2 = new Edge(map.get(edges[1]), map.get(edges[0]), Integer.parseInt(edges[2]));
                 numEdges++;
-                Edge tmp;
-                int loc = 0;
-                if(adjacencyList[0] == null){
-                    adjacencyList[0] = edge1;
-                    adjacencyList[1] = edge2;
-                }else{
-                    while(loc < numEdges && adjacencyList[loc]!= null){
-                        if(adjacencyList[loc].getId1() == map.get(edges[0])){
-                            for(tmp = adjacencyList[loc]; tmp.next() != null; tmp = tmp.next()){ }
-                            tmp.setNext(edge1);
-
-                        }
-                        if(adjacencyList[loc].getId1() == map.get(edges[1])){
-                            for(tmp = adjacencyList[loc]; tmp.next() != null; tmp = tmp.next()){ }
-                            tmp.setNext(edge2);
-
-                        }
-                        loc++;
-                    }
+                if(adjacencyList[map.get(edges[0])] == null){
+                    adjacencyList[map.get(edges[0])] = edge1;
+                }else {
+                    Edge tmp1;
+                    for (tmp1 = adjacencyList[map.get(edges[0])]; tmp1.next() != null; tmp1 = tmp1.next()) { }
+                    tmp1.setNext(edge1);
                 }
+                if(adjacencyList[map.get(edges[1])] == null){
+                    adjacencyList[map.get(edges[1])] = edge2;
+                }else {
+                    Edge tmp2;
+                    for(tmp2 = adjacencyList[map.get(edges[1])]; tmp2.next() != null; tmp2 = tmp2.next()) { }
+                    tmp2.setNext(edge2);
+                }
+
             }
 
         }catch(IOException e){
@@ -124,12 +119,15 @@ public class Graph {
     public Point[][] getEdges() {
         Point[][] edges2D = new Point[numEdges][2];
         // FILL IN CODE
-        /*
-        for(int i = 0; i < numNodes; i ++){
-            for(int j = 0; i < numNodes; i ++){
-                if(adjacencyList[i]
+        int i = 0;
+        for(Edge edge: adjacencyList){
+            Edge tmp;
+            for(tmp = edge; tmp!= null; tmp = tmp.next()){
+                edges2D[i][0] = this.getNode(tmp.getId1()).getLocation();
+                edges2D[i][1] = this.getNode(tmp.getId2()).getLocation();
+                i++;
             }
-        }*/
+        }
 
 
 
@@ -148,7 +146,7 @@ public class Graph {
         }
         Point[] nodes = new Point[this.nodes.length];
         // FILL IN CODE
-        for(int i = 0; i < numNodes; i++){
+        for(int i = 0; i < this.nodes.length; i++){
             nodes[i] = this.nodes[i].getLocation();
         }
 
