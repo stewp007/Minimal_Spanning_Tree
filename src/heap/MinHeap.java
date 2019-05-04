@@ -1,7 +1,7 @@
 package heap;
 
 public class MinHeap {
-    private int[] heap; // the array to store the heap
+    public int[] heap; // the array to store the heap
     private int maxsize; // the size of the array
     private int size; // the current number of elements in the array
 
@@ -120,5 +120,34 @@ public class MinHeap {
             swap(position, smallestchild);
             position = smallestchild;
         }
+    }
+    public void pushUp(int position){
+        //int currChild;
+        while (position != 0 && (parent(position) > heap[position])){
+            //currChild = leftChild(position); // set the smallest child to left child
+            /*
+            if ((smallestchild < size) && (heap[smallestchild] > heap[smallestchild + 1]))
+                smallestchild = smallestchild + 1; // right child was smaller, so smallest child = right child
+            */
+            // the value of the smallest child is less than value of current,
+            // the heap is already valid
+            if (heap[position] >= heap[parent(position)])
+                return;
+            swap(position, parent(position));
+            position = parent(position);
+        }
+    }
+    /** Returns the index of a given priority in the heap
+     *
+     * @param priority
+     * @return the index of the priority or -1 if priority is not in heap
+     */
+    public int getIndex(int priority){
+        for(int i = 0; i < maxsize; i++){
+            if(heap[i] == priority){
+                return i;
+            }
+        }
+        return -1;
     }
 }

@@ -13,14 +13,34 @@ public class PriorityQueue{
         position = new int[size];
         this.size = 0;
     }
-    void insert(int nodeId, int priority){
+
+    public int getSize(){
+        return this.size;
+    }
+    public void insert(int nodeId, int priority){
+        heap.insert(priority);
+        position[nodeId] = heap.getIndex(priority);
+        size++;
 
     }
-    int removeMin(){
-        return 1;
+    public int removeMin(){
+        size--;
+        int min = heap.removeMin();
+        for(int i = 0; i < position.length; i++){
+            if(position[i] == min){
+                position[i] = -1;
+            }
+        }
+        return min;
     }
-    void reduceKey(int nodeId, int newPriority){
-
+    public void reduceKey(int nodeId, int newPriority){
+        if(newPriority < heap.heap[position[nodeId]]){
+            heap.heap[position[nodeId]] = newPriority;
+            heap.pushUp(heap.heap[position[nodeId]]);
+            position[nodeId] = heap.getIndex(newPriority);
+        }else{
+            //key will not be reduced
+        }
     }
 
 }
