@@ -25,10 +25,31 @@ public class PrimAlgorithm extends MSTAlgorithm {
     public void computeMST() {
         // FILL IN CODE
         // Note: must use a PriorityQueue and be efficient
+        boolean[] known = new boolean[numNodes()];
+        int [][] table = new int[numNodes()][2];
+        for(int i = 0; i < numNodes(); i++){
+            table[i][0] = (int)Double.POSITIVE_INFINITY;
+            table[i][1] = -1;
+            //table[i][2] = 0;
+
+        }
+        table[sourceVertex][0] = 0;
+        known[sourceVertex] = true;
+        for(int i = 0; i < numNodes(); i++){
+            int v = findMinimumUnknownVertex();
+            known[v] = true;
+            Edge tmp;
+            for(tmp = getFirstEdge(v); tmp != null; tmp = tmp.next()){
+                
+            }
+
+        }
 
 
 
-
+    }
+    private int findMinimumUnknownVertex(){
+        return 0;
     }
 
 }

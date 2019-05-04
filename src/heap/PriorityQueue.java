@@ -27,9 +27,7 @@ public class PriorityQueue{
         size--;
         int min = heap.removeMin();
         for(int i = 0; i < position.length; i++){
-            if(position[i] == min){
-                position[i] = -1;
-            }
+            position[i]--;
         }
         return min;
     }
