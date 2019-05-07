@@ -20,28 +20,13 @@ public class PriorityQueue{
     public int getSize(){
         return this.size;
     }
-    /*
-    public void insert(int nodeId, int priority){
-        size++;
-        heap.insert(nodeId, priority);
-        position[nodeId] = heap.getIndex(priority);
 
-    }
-
-    public int removeMin(){
-        size--;
-        int min = heap.removeMin().getNodeId();
-        for(int i = 0; i < position.length; i++){
-            position[i]--;
-        }
-        return min;
-    }*/
     public void reduceKey(int nodeId, int newPriority){
-        System.out.println("Loc in heap: "+ position[nodeId]);
+
         if(newPriority < heap[position[nodeId]].getPriority()){
             heap[position[nodeId]].setPriority(newPriority);
             pushUp(position[nodeId]);
-            //position[nodeId] = getIndex(nodeId);
+
         }else{
             //key will not be reduced
         }

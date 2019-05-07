@@ -34,7 +34,7 @@ public class PrimAlgorithm extends MSTAlgorithm {
             table[i][0] = Integer.MAX_VALUE; //cost
             table[i][1] = -1;                //parent
 
-           // priorityQueue.insert(i, Integer.MAX_VALUE);
+
 
 
         }
@@ -46,27 +46,15 @@ public class PrimAlgorithm extends MSTAlgorithm {
             }else{
                 priorityQueue.insert(i, Integer.MAX_VALUE);
             }
-            //priorityQueue.insert(i, Integer.MAX_VALUE);
+
         }
-        System.out.println("Source Vertex: "+ sourceVertex);
+
         priorityQueue.reduceKey(sourceVertex, 0);
-        /*
-        for(int i = 0; i < numNodes(); i++){*/
+
         while(priorityQueue.getSize() != 0){
 
             int vertex = priorityQueue.removeMin();
-            /*
-            if(vertex == sourceVertex){
-                edge = new Edge(sourceVertex, sourceVertex, 0);
-                addMSTEdge(edge);
-                known[vertex] = true;
-            }else{
-                edge  = new Edge(vertex, table[vertex][1], table[vertex][0]);
-                addMSTEdge(edge);
-                known[vertex] = true;
-            }
-*/
-            //System.out.println(vertex);
+
             known[vertex] = true;
             Edge tmp;
             for(tmp = getFirstEdge(vertex); tmp != null; tmp = tmp.next()){
@@ -76,7 +64,6 @@ public class PrimAlgorithm extends MSTAlgorithm {
                     if(table[destinationVertex][0] > cost){
                         table[destinationVertex][0] = cost;
                         table[destinationVertex][1] = vertex;
-                        System.out.println("Destination: "+ destinationVertex);
                         priorityQueue.reduceKey(destinationVertex, cost);
                     }
                 }
