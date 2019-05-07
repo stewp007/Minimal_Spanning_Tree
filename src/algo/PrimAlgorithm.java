@@ -38,6 +38,8 @@ public class PrimAlgorithm extends MSTAlgorithm {
 
 
         }
+        table[sourceVertex][0]=0;
+        table[sourceVertex][1]=0;
         for(int i = 0; i < numNodes(); i++){
             if(i == sourceVertex){
                 priorityQueue.insert(i, 0);

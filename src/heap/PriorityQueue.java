@@ -11,10 +11,10 @@ public class PriorityQueue{
 
     public PriorityQueue(int size){
         heap = new HeapNode[size+1];
-        position = new int[size+1];
+        position = new int[size];
         this.maxSize = size;
         this.size = 0;
-        heap[0] = new HeapNode(0,Integer.MIN_VALUE);
+        heap[0] = new HeapNode(Integer.MIN_VALUE,Integer.MIN_VALUE);
     }
 
     public int getSize(){
@@ -40,7 +40,7 @@ public class PriorityQueue{
         System.out.println("Loc in heap: "+ position[nodeId]);
         if(newPriority < heap[position[nodeId]].getPriority()){
             heap[position[nodeId]].setPriority(newPriority);
-            pushUp(heap[position[nodeId]].getNodeId());
+            pushUp(position[nodeId]);
             //position[nodeId] = getIndex(nodeId);
         }else{
             //key will not be reduced
@@ -88,13 +88,15 @@ public class PriorityQueue{
      * @param pos2 the index of the second element in the heap
      */
     private void swap(int pos1, int pos2) {
-        HeapNode tmp = heap[pos1];
-        int tmpPos = getIndex(heap[pos1].getPriority());
-        heap[pos1] = heap[pos2];
-        position[pos1] = getIndex(heap[pos2].getPriority());
-        heap[pos2] = tmp;
-        position[pos2] = tmpPos;
+        int tmpPos1 = heap[pos1].getNodeId();
+        int tmpPos2 = heap[pos2].getNodeId();
+        position[tmpPos1] = pos2;
+        position[tmpPos2] = pos1;
 
+
+        HeapNode tmp = heap[pos1];
+        heap[pos1] = heap[pos2];
+        heap[pos2] = tmp;
     }
 
     /** Insert an element into the heap
@@ -111,6 +113,7 @@ public class PriorityQueue{
                 swap(current, parent(current));
                 current = parent(current);
             }
+            position[elem] = current;
         }else{
             System.out.println("Heap is full");
         }
@@ -145,6 +148,8 @@ public class PriorityQueue{
     private void pushdown(int position) {
         int smallestchild;
         while (!isLeaf(position)) {
+            if(size < position)
+                return;
             smallestchild = leftChild(position); // set the smallest child to left child
             if ((smallestchild < size) && (heap[smallestchild].getPriority() > heap[smallestchild + 1].getPriority()))
                 smallestchild = smallestchild + 1; // right child was smaller, so smallest child = right child
@@ -158,18 +163,16 @@ public class PriorityQueue{
         }
     }
     public void pushUp(int position){
-        //int currChild;
-        while (position != 0 && (parent(position) > heap[position].getPriority())){
-            //currChild = leftChild(position); // set the smallest child to left child
-            /*
-            if ((smallestchild < size) && (heap[smallestchild] > heap[smallestchild + 1]))
-                smallestchild = smallestchild + 1; // right child was smaller, so smallest child = right child
-            */
+        int currChild;
+        while (!isLeaf(position ) ||  heap[position].getPriority() < heap[parent(position)].getPriority()){
+            currChild = parent(position); // set the smallest child to left child
+            if ((currChild < size) && (heap[currChild].getPriority() < heap[currChild + 1].getPriority()))
+                currChild = currChild + 1; // right child was smaller, so smallest child = right child
             // the value of the smallest child is less than value of current,
             // the heap is already valid
-            if (heap[position].getPriority() >= heap[parent(position)].getPriority())
+            if (heap[position].getPriority() >= heap[currChild].getPriority())
                 return;
-            swap(position, parent(position));
+            swap(position, currChild);
             position = parent(position);
         }
     }
