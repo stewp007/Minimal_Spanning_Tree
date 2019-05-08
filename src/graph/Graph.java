@@ -43,7 +43,7 @@ public class Graph {
             nodes = new CityNode[numNodes];
             line = file.readLine();
             while(c  < numNodes){
-                
+
                 String[] cities = line.split(" ");
                 CityNode node = new CityNode(cities[0], Double.parseDouble(cities[1]), Double.parseDouble(cities[2]));
                 nodes[c] = node;
@@ -97,6 +97,12 @@ public class Graph {
     public int numNodes() {
         return nodes.length;
     }
+
+    /**
+     * Return the number of edges in the graph
+     * @return number of edges
+     */
+    public int numEdges(){return this.numEdges;}
 
     /** Return the head of the linked list that contains all edges outgoing
      * from nodeId

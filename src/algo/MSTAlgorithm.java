@@ -53,6 +53,14 @@ public abstract class MSTAlgorithm {
         return graph.numNodes();
     }
 
+    /**
+     * Return the number of edges in the graph
+     * @return number of edges
+     */
+    public int numEdges(){
+        return graph.numEdges();
+    }
+
     /** Return the head of the linked list that contains all edges outgoing
      * from nodeId
      * @param nodeId id of the node
